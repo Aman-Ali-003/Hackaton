@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MediSync AI | Healthcare Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a href="#" class="brand" data-page="dashboard">
+        <span class="brand-icon">✚</span>
+        <span>MediSync <small>AI HEALTHCARE</small></span>
+      </a>
+
+      <p class="menu-label">WORKSPACE</p>
+      <nav class="navigation">
+        <button class="nav-link">🎤︎︎j<span>Voice</span></button>
+        <button class="nav-link active" data-page="dashboard">
+          ▦ <span>Dashboard</span>
+        </button>
+        <button class="nav-link" data-page="patients">
+          ♙ <span>Patients</span>
+        </button>
+        <button class="nav-link" data-page="new-visit">
+          ＋ <span>New Visit</span>
+        </button>
+        <button class="nav-link" data-page="sync">
+          ⇄ <span>Offline & Sync</span>
+        </button>
+        <button class="nav-link" data-page="activity">
+          ◷ <span>Activity Log</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="offline-card">
+          <span class="online-dot"></span>
+          <div>
+            <strong id="connection-label">Connection status</strong>
+            <p id="connection-detail">Checking network...</p>
+          </div>
+        </div>
+        <p class="sidebar-note">MediSync AI Demo · v1.0</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button
+          class="menu-toggle"
+          id="menu-toggle"
+          aria-label="Toggle navigation"
+        >
+          ☰
+        </button>
+        <div class="breadcrumb">
+          Workspace / <strong id="breadcrumb">Dashboard</strong>
+        </div>
+        <div class="top-actions">
+          <span class="date-label" id="today"></span>
+          <div class="avatar">A</div>
+          <div class="admin-label">
+            Administrator<small>Demo account</small>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- DASHBOARD -->
+        <section class="page active" id="dashboard">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">OVERVIEW</p>
+              <h1>Healthcare Dashboard</h1>
+              <p class="subtitle">
+                Monitor patient records and synchronization.
+              </p>
+            </div>
+            <button class="primary-btn" data-go="new-visit">
+              ＋ New patient visit
+            </button>
+          </div>
+
+          <div class="banner">
+            <div class="banner-icon">✚</div>
+            <div>
+              <h3>Your healthcare workspace</h3>
+              <p>
+                Record visits locally and review which records are waiting to
+                sync.
+              </p>
+            </div>
+            <span class="demo-tag">DEMO</span>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Total Patients</span><span class="stat-icon blue">♙</span>
+              </div>
+              <h2 id="total-patients">0</h2>
+              <p>Unique patient records</p>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Total Visits</span><span class="stat-icon purple">▤</span>
+              </div>
+              <h2 id="total-visits">0</h2>
+              <p>Visit entries recorded</p>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Pending Sync</span><span class="stat-icon orange">⇄</span>
+              </div>
+              <h2 id="pending-count">0</h2>
+              <p>Waiting for synchronization</p>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Synced Records</span
+                ><span class="stat-icon green">✓</span>
+              </div>
+              <h2 id="synced-count">0</h2>
+              <p>Marked synced in this demo</p>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Recent Patient Visits</h2>
+                  <p>Latest records in this browser</p>
+                </div>
+                <button class="text-btn" data-go="patients">View all →</button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Patient</th>
+                      <th>Visit date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-table"></tbody>
+                </table>
+              </div>
+              <p class="empty-state" id="recent-empty">
+                No records yet. Create your first visit.
+              </p>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Sync Overview</h2>
+                  <p>Local record status</p>
+                </div>
+              </div>
+              <div class="sync-illustration">⇄</div>
+              <h3 class="center-text">Keep your records in sync</h3>
+              <p class="muted center-text">
+                Save a visit locally, then use the demo sync action to mark it
+                as synchronized.
+              </p>
+              <div class="progress-track">
+                <div id="sync-progress" class="progress-fill"></div>
+              </div>
+              <div class="progress-label">
+                <span>Synced</span><strong id="sync-percent">0%</strong>
+              </div>
+              <button class="secondary-btn full-btn" data-go="sync">
+                Manage synchronization
+              </button>
+            </section>
+          </div>
+
+          <section class="panel activity-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Recent Activity</h2>
+                <p>Actions in this browser session and saved log</p>
+              </div>
+              <button class="text-btn" data-go="activity">
+                View activity →
+              </button>
+            </div>
+            <div id="dashboard-activity" class="activity-list"></div>
+          </section>
+        </section>
+
+        <!-- PATIENTS -->
+        <section class="page" id="patients">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">RECORD MANAGEMENT</p>
+              <h1>Patients</h1>
+              <p class="subtitle">
+                Review the patient records saved in this browser.
+              </p>
+            </div>
+            <button class="primary-btn" data-go="new-visit">
+              ＋ Add patient
+            </button>
+          </div>
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Patient Records</h2>
+                <p id="patient-subtitle">All locally stored visit records</p>
+              </div>
+              <input
+                class="search-input"
+                id="patient-search"
+                type="search"
+                placeholder="Search name or ID..."
+              />
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Patient ID</th>
+                    <th>Name</th>
+                    <th>Visit date</th>
+                    <th>Notes</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="patients-table"></tbody>
+              </table>
+            </div>
+            <p class="empty-state" id="patients-empty">
+              No patient records found.
+            </p>
+          </section>
+        </section>
+
+        <!-- NEW VISIT -->
+        <section class="page" id="new-visit">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">PATIENT MANAGEMENT</p>
+              <h1>New Patient Visit</h1>
+              <p class="subtitle">
+                Enter fictional demo information to create a local record.
+              </p>
+            </div>
+          </div>
+          <section class="panel form-panel">
+            <div class="form-section-heading">
+              <span>01</span>
+              <div>
+                <h2>Patient information</h2>
+                <p>Basic details for this demo record</p>
+              </div>
+            </div>
+            <form id="visit-form">
+              <div class="form-grid">
+                <label
+                  >Patient full name *
+                  <input
+                    name="name"
+                    required
+                    maxlength="80"
+                    placeholder="e.g. Alex Morgan"
+                  />
+                </label>
+                <label
+                  >Patient ID
+                  <input
+                    name="patientId"
+                    maxlength="30"
+                    placeholder="Auto-generated if empty"
+                  />
+                </label>
+                <label
+                  >Visit date *
+                  <input name="date" type="date" required />
+                </label>
+
+                <label>Visit type *
+                  <select name="visitType" required>
+                    <option value="">Select visit type</option>
+                    <option value="General Consultation">General Consultation</option>
+                    <option value="Follow-up">Follow-up</option>
+                    <option value="Routine Check-up">Routine Check-up</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </label>
+
+                <label class="full-field"
+                  >Visit notes *
+                  <textarea
+                    name="notes"
+                    required
+                    maxlength="1500"
+                    rows="5"
+                    placeholder="Enter fictional visit notes..."
+                  ></textarea>
+                </label>
+                <label class="full-field"
+                  >Plan / Follow-up
+                  <textarea
+                    name="plan"
+                    maxlength="1000"
+                    rows="3"
+                    placeholder="Optional follow-up information"
+                  ></textarea>
+                </label>
+              </div>
+              <div class="privacy-note">
+                ⓘ Demo only: use fictional data. This form saves to this
+                browser, not a real medical server.
+              </div>
+              <div class="form-actions">
+                <button class="secondary-btn" type="reset">Clear form</button>
+                <button class="primary-btn" type="submit">
+                  Save visit locally →
+                </button>
+              </div>
+              <p id="form-message" class="form-message" role="status"></p>
+            </form>
+          </section>
+        </section>
+
+        <!-- SYNC -->
+        <section class="page" id="sync">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">CONNECTIVITY</p>
+              <h1>Offline & Sync</h1>
+              <p class="subtitle">
+                Review local records and try the synchronization demo.
+              </p>
+            </div>
+          </div>
+          <div class="sync-status-card">
+            <div class="large-status-icon">⇄</div>
+            <div class="sync-status-copy">
+              <p class="eyebrow">CURRENT CONNECTION</p>
+              <h2 id="sync-connection-title">Checking...</h2>
+              <p id="sync-connection-description">
+                Your browser connection status appears here.
+              </p>
+            </div>
+            <span class="status-pill" id="network-pill">Checking</span>
+          </div>
+          <div class="stats-grid two-stats">
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Pending records</span
+                ><span class="stat-icon orange">◷</span>
+              </div>
+              <h2 id="sync-pending">0</h2>
+              <p>Not yet marked synced</p>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Synced records</span
+                ><span class="stat-icon green">✓</span>
+              </div>
+              <h2 id="sync-done">0</h2>
+              <p>Marked synced in this demo</p>
+            </article>
+          </div>
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Synchronization queue</h2>
+                <p>Records saved locally on this device</p>
+              </div>
+              <button id="sync-button" class="primary-btn">
+                ⇄ Run demo sync
+              </button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Record ID</th>
+                    <th>Patient</th>
+                    <th>Created</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="sync-table"></tbody>
+              </table>
+            </div>
+            <p class="empty-state" id="sync-empty">No records in the queue.</p>
+            <p id="sync-message" class="form-message" role="status"></p>
+          </section>
+          <div class="privacy-note">
+            Demo limitation: this button only changes a local status flag. It
+            does not upload records to a server. Real synchronization requires a
+            backend API, authentication, secure transport, and conflict
+            handling.
+          </div>
+        </section>
+
+        <!-- ACTIVITY -->
+        <section class="page" id="activity">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">SYSTEM MONITORING</p>
+              <h1>Activity Log</h1>
+              <p class="subtitle">
+                Review recent actions recorded by this demo.
+              </p>
+            </div>
+            <button id="clear-activity" class="secondary-btn">
+              Clear activity log
+            </button>
+          </div>
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Recent events</h2>
+                <p>Newest events appear first</p>
+              </div>
+            </div>
+            <div id="full-activity" class="activity-list"></div>
+            <p class="empty-state" id="activity-empty">
+              No activity to display.
+            </p>
+          </section>
+        </section>
+
+        <footer class="footer">
+          <span>© 2026 MediSync AI · Hackathon Prototype</span>
+          <span>For demonstration only · Not for real patient data</span>
+        </footer>
+      </div>
+    </main>
+
+    <div id="toast" class="toast" role="status"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
